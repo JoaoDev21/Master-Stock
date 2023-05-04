@@ -89,6 +89,7 @@ const Produtos = () => {
   return (
     <Flex h="100vh" flexDirection="column" bgColor={"blue.900"}>
       <Header />
+      <pedidos />
 
       <Flex w="100%" my="6" maxW={1120} mx="auto" px="6" h="100vh">
         <Sidebar />

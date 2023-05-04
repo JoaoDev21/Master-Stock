@@ -26,6 +26,21 @@ const SidebarNav = () => {
               </Text>
             </Link>
           </ChakraLink>
+
+          <ChakraLink
+            _hover={{ bg: "gray.100" }}
+            px="4"
+            py="2"
+            borderRadius={5}
+            bg={asPath === "/pedidos.js" ? "gray.200" : ""}
+          >
+            <Link href="/pedidos.js">
+              <Text fontSize="md" fontWeight="medium" color="gray.500">
+                PEDIDOS
+              </Text>
+            </Link>
+          </ChakraLink>
+
         </Stack>
       </Stack>
 
