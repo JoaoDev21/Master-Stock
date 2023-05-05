@@ -122,7 +122,13 @@ import {
               </Button>
             </SimpleGrid>
   
-            <Box overflowY="auto" height="70vh" marginTop={"5"} borderRadius={"10"} /*backgroundColor={"gray.100"}*/>
+            <Box 
+            overflowY="auto" 
+            height="70vh" 
+            marginTop={"5"} 
+            borderRadius={"10"} 
+            /*backgroundColor={"gray.100"}*/
+            >
               <Table 
                 mt="0">
 

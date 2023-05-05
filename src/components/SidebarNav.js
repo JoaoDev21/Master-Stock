@@ -32,9 +32,9 @@ const SidebarNav = () => {
             px="4"
             py="2"
             borderRadius={5}
-            bg={asPath === "/pedidos.js" ? "gray.200" : ""}
+            bg={asPath === "/requestsEntries" ? "gray.200" : ""}
           >
-            <Link href="/pedidos.js">
+            <Link href="/requestsEntries">
               <Text fontSize="md" fontWeight="medium" color="gray.500">
                 PEDIDOS
               </Text>
