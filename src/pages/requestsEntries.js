@@ -112,7 +112,7 @@ import {
 
           <Box w="100%" >
 
-            <SimpleGrid minChildWidth={200} h="fit-content" spacing="1">
+            <SimpleGrid minChildWidth={150} h="fit-content" spacing="1">
               <Input
                 color={"gray"}
                 value={date}
@@ -135,7 +135,7 @@ import {
               <Select
                 color={"gray"}
                 value={modelEquipament}
-                onChange={(e) => setProduct_id(e.target.value)}
+                onChange={(e) => modelEquipament(e.target.value)}
               >
                 <option value="0">Selecione um item</option>
                 {listProducts &&
@@ -196,7 +196,6 @@ import {
                   <Th fontWeight="bold" fontSize="14px" color={"gray"}>
                     PLACA
                   </Th>
-                  
                   <Th></Th>
                 </Tr>
               </Thead>
