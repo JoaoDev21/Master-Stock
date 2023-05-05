@@ -86,7 +86,6 @@ import {
   
           <Box w="100%">
             <SimpleGrid minChildWidth={200} h="fit-content" spacing="1">
-              
               <Input
               color={"gray"}
               placeholder="DATA"

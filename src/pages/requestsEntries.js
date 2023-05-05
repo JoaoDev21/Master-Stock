@@ -112,7 +112,7 @@ import {
 
           <Box w="100%" >
 
-            <SimpleGrid minChildWidth={20} h="fit-content" spacing="1">
+            <SimpleGrid minChildWidth={200} h="fit-content" spacing="1">
               <Input
                 color={"gray"}
                 value={date}
@@ -174,20 +174,44 @@ import {
           >
             <Table 
               mt="0" 
-              borderInline={"black"}>
+            >
                 
               <Thead>
                 <Tr>
                   <Th fontWeight="bold" fontSize="14px" color={"gray"}>
-                    Nome
+                    DATA
                   </Th>
+                  <Th fontWeight="bold" fontSize="14px" color={"gray"}>
+                    CLIENTE
+                  </Th>
+                  <Th fontWeight="bold" fontSize="14px" color={"gray"}>
+                    QTD.
+                  </Th>
+                  <Th fontWeight="bold" fontSize="14px" color={"gray"}>
+                    BATERIA
+                  </Th>
+                  <Th fontWeight="bold" fontSize="14px" color={"gray"}>
+                    EQUIPAMENTO
+                  </Th>
+                  <Th fontWeight="bold" fontSize="14px" color={"gray"}>
+                    PLACA
+                  </Th>
+                  
                   <Th></Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {listProducts.map((item, i) => (
                   <Tr key={i}>
-                    <Td color="gray.500">{item.name}</Td>
+                    <Td color="gray.500">{item.date}</Td>
+                    <Td color="gray.500">{item.client}</Td>
+                    <Td color="gray.500">{item.qtd}</Td>
+                    <Td color="gray.500">{item.modelBatery}</Td>
+                    <Td color="gray.500">{item.modelEquipament}</Td>
+                    <Td color="gray.500">{item.plate}</Td>
+
+                    
+                    
                     <Td textAlign="end">
                       <Button
                         p="2"
