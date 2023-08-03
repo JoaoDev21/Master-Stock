@@ -16,6 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import Head from "next/head";
 
 const Produtos = () => {
   const [name, setName] = useState("");
@@ -85,9 +86,32 @@ const Produtos = () => {
 
     setListProducts(newArray);
   };
+  const [editedProductId, setEditedProductId] = useState("");
+  const [editedProductName, setEditedProductName] = useState("");
 
+  const cancelEdit = () => {
+    setEditedProductId("");
+    setEditedProductName("");
+  };
+  const editProduct = (id) => {
+    const updatedProducts = listProducts.map((product) => {
+      if (product.id === id) {
+        return { ...product, name: editedProductName };
+      }
+      return product;
+    });
+
+    localStorage.setItem("db_products", JSON.stringify(updatedProducts));
+    setListProducts(updatedProducts);
+    setEditedProductId("");
+    setEditedProductName("");
+  
+  }
   return (
     <Flex h="100vh" flexDirection="column" bgColor={"blue.900"}>
+      <Head>
+        <title>PROD. X-GLOBAL</title>
+      </Head>
       <Header />
 
       <Flex w="100%" my="6" maxW={1120} mx="auto" px="6" h="100vh">
@@ -126,22 +150,76 @@ const Produtos = () => {
               <Tbody>
                 {listProducts.map((item, i) => (
                   <Tr key={i}>
-                    <Td color="gray.500">{item.name}</Td>
+                    <Td>
+                      {item.id !== editedProductId ? (
+                        <Text color="gray.500">{item.name}</Text>
+                      ) : (
+                        <Input
+                          color="gray"
+                          value={editedProductName}
+                          onChange={(e) => setEditedProductName(e.target.value)}
+                          placeholder="Novo nome"
+                        />
+                      )}
+                    </Td>
                     <Td textAlign="end">
-                      <Button
-                        p="2"
-                        h="auto"
-                        fontSize={11}
-                        color="red.500"
-                        fontWeight="bold"
-                        onClick={() => removeProduct(item.id)}
-                      >
-                        DELETAR
-                      </Button>
+                      {item.id !== editedProductId ? (
+                        <>
+                          <Button
+                            p="2"
+                            h="auto"
+                            fontSize={11}
+                            color="blue.500"
+                            fontWeight="bold"
+                            onClick={() => {
+                              setEditedProductId(item.id);
+                              setEditedProductName(item.name);}}
+                            
+                          >
+                            EDITAR
+                          </Button>
+                          <Button
+                            p="2"
+                            h="auto"
+                            ml={2}
+                            fontSize={11}
+                            color="red.500"
+                            fontWeight="bold"
+                            onClick={() => removeProduct(item.id)}
+                          >
+                            DELETAR
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            p="2"
+                            h="auto"
+                            fontSize={11}
+                            color="green.500"
+                            fontWeight="bold"
+                            onClick={() => editProduct(item.id)}
+                          >
+                            SALVAR
+                          </Button>
+                          <Button
+                            p="2"
+                            h="auto"
+                            ml={2}
+                            fontSize={11}
+                            color="red.500"
+                            fontWeight="bold"
+                            onClick={() => cancelEdit()}
+                          >
+                            CANCELAR
+                          </Button>
+                        </>
+                      )}
                     </Td>
                   </Tr>
                 ))}
               </Tbody>
+
             </Table>
           </Box>
           
