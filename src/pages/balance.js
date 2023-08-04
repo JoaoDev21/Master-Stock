@@ -15,7 +15,8 @@ import {
   import React, { useEffect, useState } from "react";
   import Header from "../components/Header";
   import Sidebar from "../components/Sidebar";
-import { color } from "framer-motion";
+  import { color } from "framer-motion";
+  import Head from "next/head";
   
   const Balance = () => {
     const [listProducts, setListProducts] = useState([]);
@@ -77,9 +78,15 @@ import { color } from "framer-motion";
   
       setListProducts(newArray);
     };
+    
 
     return (
       <Flex h="100vh" flexDirection="column" bgColor={"blue.900"}>
+        <Head>
+          <title>
+            PROD. X-GLOBAL
+          </title>
+        </Head>
         <Header />
   
         <Flex w="100%" my="6" maxW={1120} mx="auto" px="6" h="100vh">

@@ -15,6 +15,7 @@ import {
   import React, { useEffect, useState } from "react";
   import Header from "../components/Header";
   import Sidebar from "../components/Sidebar";
+  import Head from "next/head";
   
   const StockEntries = () => {
     const [amount, setAmount] = useState("");
@@ -76,15 +77,63 @@ import {
     const getProductById = (id) => {
       return listProducts.filter((item) => item.id === id)[0]?.name;
     };
-  
+    //_____________________________________________________________________________________
+    const [editingEntryId, setEditingEntryId] = useState(null);
+    const [editingAmount, setEditingAmount] = useState("");
+    const [editingProductId, setEditingProductId] = useState("0");
+    const [editingDate, setEditingDate] = useState("");
+
+    const startEditing = (entry) => {
+      setEditingEntryId(entry.id);
+      setEditingAmount(entry.amount);
+      setEditingProductId(entry.product_id);
+      setEditingDate(entry.date);
+    };
+
+    const cancelEditing = () => {
+      setEditingEntryId(null);
+      setEditingAmount("");
+      setEditingProductId("0");
+      setEditingDate("");
+    };
+
+    const saveEditing = () => {
+      if (!editingAmount || editingProductId === "0" || !editingDate) {
+        return alert("Selecione o produto e a quantidade!");
+      }
+
+      const updatedEntries = listStockEntries.map((entry) =>
+        entry.id === editingEntryId
+          ? {
+              ...entry,
+              amount: editingAmount,
+              product_id: editingProductId,
+              date: editingDate,
+            }
+          : entry
+      );
+
+      localStorage.setItem("db_stock_entries", JSON.stringify(updatedEntries));
+      setStockEntries(updatedEntries);
+
+      setEditingEntryId(null);
+      setEditingAmount("");
+      setEditingProductId("0");
+      setEditingDate("");
+    };
+
+    //_____________________________________________________________________________________
     return (
       <Flex h="100vh" flexDirection="column" bgColor={"blue.900"}>
+        <Head>
+          <title>PROD. X-GLOBAL</title>
+        </Head>
         <Header />
   
         <Flex w="100%" my="6" maxW={1120} mx="auto" px="6" h="100vh">
           <Sidebar />
   
-          <Box w="100%">
+          <Box w="100%" borderColor={"#000000"}>
             <SimpleGrid minChildWidth={200} h="fit-content" spacing="1">
               
               <Input
@@ -142,23 +191,94 @@ import {
                 </Thead>
                 <Tbody>
                   {listStockEntries.map((item, i) => (
-                    <Tr key={i}>
-                      <Td color="gray.500">{item.date}</Td>
-                      <Td color="gray.500">{getProductById(item.product_id)}</Td>
-                      <Td color="gray.500">{item.amount}</Td>
-                      <Td textAlign="end">
-                        <Button
-                          p="2"
-                          h="auto"
-                          fontSize={11}
-                          color="red.500"
-                          fontWeight="bold"
-                          onClick={() => removeEntries(item.id)}
-                        >
-                          DELETAR
-                        </Button>
-                      </Td>
-                    </Tr>
+                    <React.Fragment key={i}>
+                      {editingEntryId === item.id ? (
+                        <Tr>
+                          <Td>
+                            <Input
+                              color={"gray"}
+                              type="date"
+                              value={editingDate}
+                              onChange={(e) => setEditingDate(e.target.value)}
+                            />
+                          </Td>
+                          <Td>
+                            <Select
+                              color={"gray"}
+                              value={editingProductId}
+                              onChange={(e) => setEditingProductId(e.target.value)}
+                            >
+                              <option value="0">Selecione um item</option>
+                              {listProducts.map((item) => (
+                                <option key={item.id} value={item.id}>
+                                  {item.name}
+                                </option>
+                              ))}
+                            </Select>
+                          </Td>
+                          <Td>
+                            <Input
+                              color={"gray"}
+                              type="number"
+                              value={editingAmount}
+                              onChange={(e) => setEditingAmount(e.target.value)}
+                            />
+                          </Td>
+                          <Td textAlign="end">
+                            <Button                             
+                              p="1"
+                              width={'20'}
+                              h="auto"
+                              fontSize={11}
+                              color="green.500"
+                              fontWeight="bold"
+                              onClick={saveEditing}>
+                              SALVAR
+                            </Button>
+                            <Button 
+                              p="1"
+                              width={'20'}
+                              h="auto"
+                              ml={2}
+                              fontSize={11}
+                              color="red.500"
+                              fontWeight="bold"
+                              onClick={cancelEditing}>
+                              CANCELAR
+                            </Button>
+                          </Td>
+                        </Tr>
+                      ) : (
+                        <Tr key={i}>
+                          <Td color="gray.500">{item.date}</Td>
+                          <Td color="gray.500">{getProductById(item.product_id)}</Td>
+                          <Td color="gray.500">{item.amount}</Td>
+                          <Td textAlign="end">
+                            <Button
+                              p="2"
+                              h="auto"
+                              fontSize={11}
+                              color="blue.500"
+                              fontWeight="bold"
+                              onClick={() => startEditing(item)}
+                            >
+                              EDITAR
+                            </Button>
+                            <Button
+                              p="2"
+                              h="auto"
+                              ml={2}
+                              fontSize={11}
+                              color="red.500"
+                              fontWeight="bold"
+                              onClick={() => removeEntries(item.id)}
+                            >
+                              DELETAR
+                            </Button>
+                          </Td>
+                        </Tr>
+                      )}
+                    </React.Fragment>
                   ))}
                 </Tbody>
               </Table>
