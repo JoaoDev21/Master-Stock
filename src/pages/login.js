@@ -18,12 +18,12 @@ import {
     AlertIcon,
     AlertTitle,
     AlertDescription,
-    useDisclosure
+    useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from 'react';
 import { Image } from '@chakra-ui/react'
+import Head from "next/head";
 import { relative } from "path";
-
 
 
 const Login = () => {
@@ -42,16 +42,28 @@ const Login = () => {
         }
     };
     const sendResetLink  = () => {
-    alert(`Um link de recuperação foi enviado para ${resetEmail}`);
+        if(resetEmail === ''){
+            alert('Preencha o campo E-mail!')
+        }
+        else{
+            alert(`Um link de recuperação foi enviado para ${resetEmail}`);
+        }
+    }
+    const closeAlert = () => {
+
     }
 
     return (
 
         <Flex 
+         
             h="100vh" 
             flexDir="column" 
             bgColor={"blue.900"}
         >
+            <Head>
+                <title>PROD. X-GLOBAL</title>
+            </Head>
             <Flex 
                 w="30%" 
                 my="6" 
@@ -143,17 +155,31 @@ const Login = () => {
                             onClick={() => setShowResetPopup(false)}
                         />
                         <Text mb="4">Digite seu e-mail para redefinir a senha:</Text>
-                        <Input
-                            mb="4"
-                            placeholder="E-mail"
-                            value={resetEmail}
-                            onChange={(e) => setResetEmail(e.target.value)}
-                        />
-                        <Button colorScheme="blue" onClick={() => {
+                        <Box mb="4" position="relative" visibility={false}>
+                            <Input
+                                placeholder="E-mail"
+                                value={resetEmail}
+                                borderColor={resetEmail === '' ? 'red' : 'gray.300'}
+                                //borderColor={resetEmail === '' ? 'red' : 'gray.300'}
+                                onChange={(e) => setResetEmail(e.target.value)}
+                            />
+                            {resetEmail === '' && (
+                                <Text color="red.500" position="absolute" bottom="-20px" left="0">
+                                    Preencha o campo E-mail
+                                </Text>
+                            )}
+                        </Box>
+                        <Button colorScheme="blue" top={"8px"} onClick={() => {
+                            //closeAlert();
                             sendResetLink();
                             setShowResetPopup(false); // Fechar o modal após enviar o link
                         }}>
                             Enviar link de recuperação
+                        </Button>
+                        <Button top={"8px"} ml="50" onClick={() => {
+                            setShowResetPopup(false); // Fechar o modal após enviar o link
+                        }}>
+                            Cancelar
                         </Button>
                     </Box>
                 </Box>
