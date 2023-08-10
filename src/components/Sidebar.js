@@ -10,7 +10,7 @@ import {
     useDisclosure,
   } from "@chakra-ui/react";
   import React from "react";
-  import { useSidebarContext } from "../Contexts/SidebarContext";
+  import { useSidebarContext } from "../contexts/SidebarContext";
   import SidebarNav from "./SidebarNav";
   
   const Sidebar = () => {
