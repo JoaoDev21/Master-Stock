@@ -26,10 +26,10 @@ import {
       <Flex
         as="header"
         w="100%"
-        maxW={1200}
+        maxW={1440}
         h="20"
         mx="auto"
-        px="2"
+        px="5"
         py="2"
         align="center"
         boxShadow="0 1px 0 #ccc"
