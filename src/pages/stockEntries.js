@@ -124,13 +124,13 @@ import {
 
     //_____________________________________________________________________________________
     return (
-      <Flex h="100vh" flexDirection="column" bgColor={"blue.900"}>
+      <Flex h="100vh" flexDirection="column" bgColor={"blue.900"} >
         <Head>
           <title>PROD. X-GLOBAL</title>
         </Head>
         <Header />
   
-        <Flex w="100%" my="6" maxW={1120} mx="auto" px="6" h="100vh">
+        <Flex w="100%" my="6" maxW={1400} mx="auto" px="6" h="100vh">
           <Sidebar />
   
           <Box w="100%" borderColor={"#000000"}>
