@@ -18,6 +18,10 @@ import Sidebar from "../components/Sidebar";
 import Head from "next/head";
 import { MongoClient } from 'mongodb';
 
+const mongoURI = 'mongodb://localhost:27017';
+const dbName = 'Master-Estoque';
+const collectionName = 'products';
+
 const Produtos = () => {
   const [name, setName] = useState("");
   const [listProducts, setListProducts] = useState([]);
@@ -25,28 +29,27 @@ const Produtos = () => {
   const [editedProductName, setEditedProductName] = useState("");
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const client = new MongoClient('mongodb://localhost:27017');
-        await client.connect();
-        const db = client.db('Master-Estoque');
-        const collection = db.collection('products');
-
-        const result = await collection.find({}).toArray();
-        setListProducts(result);
-
-        await client.close();
-      } catch (error) {
-        console.error('Erro ao recuperar produtos do MongoDB:', error);
-      }
-    }
-
     fetchData();
   }, []);
 
+  const fetchData = async () => {
+    try {
+      const client = new MongoClient(mongoURI);
+      await client.connect();
+      const db = client.db(dbName);
+      const collection = db.collection(collectionName);
+      const result = await collection.find({}).toArray();
+      setListProducts(result);
+      await client.close();
+    } catch (error) {
+      console.error('Erro ao recuperar produtos do MongoDB:', error);
+    }
+  };
+
   const handleNewProduct = async () => {
     if (!name) return;
-    if (await verifyProductName()) {
+    const exists = await verifyProductName();
+    if (exists) {
       alert("Produto já cadastrado!");
       return;
     }
@@ -54,10 +57,10 @@ const Produtos = () => {
     const id = Math.random().toString(36).substring(2);
 
     try {
-      const client = new MongoClient('mongodb://localhost:27017');
+      const client = new MongoClient(mongoURI);
       await client.connect();
-      const db = client.db('Master-Estoque');
-      const collection = db.collection('products');
+      const db = client.db(dbName);
+      const collection = db.collection(collectionName);
 
       const newProduct = { id, name };
       await collection.insertOne(newProduct);
@@ -73,17 +76,15 @@ const Produtos = () => {
 
   const verifyProductName = async () => {
     try {
-      const client = new MongoClient('mongodb://localhost:27017');
+      const client = new MongoClient(mongoURI);
       await client.connect();
-      const db = client.db('Master-Estoque');
-      const collection = db.collection('products');
-
+      const db = client.db(dbName);
+      const collection = db.collection(collectionName);
       const existingProduct = await collection.findOne({ name });
-
       await client.close();
-
       return !!existingProduct;
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Erro ao verificar produto no MongoDB:', error);
       return false;
     }
